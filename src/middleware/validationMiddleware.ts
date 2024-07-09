@@ -13,3 +13,4 @@ export const validationMiddleware = (schema: Joi.ObjectSchema) => {
     next();
   };
 };
+

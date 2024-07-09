@@ -25,20 +25,20 @@ export const typeDefs = gql`
 
 export const resolvers = {
   Query: {
-    users: () => users,
-    user: (_: unknown, { id }: { id: string }) => users.find(user => user.id === Number(id)),
+    users: (): User[] => users, // Explicitly define the return type as User[]
+    user: (_: unknown, { id }: { id: string }): User | undefined => users.find((user: User) => user.id === Number(id)),
   },
   Mutation: {
-    createUser: (_: unknown, { firstName, lastName, email, phone }: { firstName: string; lastName: string; email: string; phone: string }) => {
-      const newUser = { id: users.length + 1, firstName, lastName, email, phone };
+    createUser: (_: unknown, { firstName, lastName, email, phone }: { firstName: string; lastName: string; email: string; phone: string }): User => {
+      const newUser: User = { id: users.length + 1, firstName, lastName, email, phone };
       users.push(newUser);
       return newUser;
     },
-    updateUser: (_: unknown, { id, firstName, lastName, email, phone }: { id: string; firstName: string; lastName: string; email: string; phone: string }) => {
-      const userIndex = users.findIndex(user => user.id === Number(id));
+    updateUser: (_: unknown, { id, firstName, lastName, email, phone }: { id: string; firstName?: string; lastName?: string; email?: string; phone?: string }): User | null => {
+      const userIndex = users.findIndex((user: User) => user.id === Number(id));
       if (userIndex === -1) return null;
       
-      const updatedUser = {
+      const updatedUser: User = {
         ...users[userIndex],
         firstName: firstName || users[userIndex].firstName,
         lastName: lastName || users[userIndex].lastName,
@@ -49,8 +49,8 @@ export const resolvers = {
       users[userIndex] = updatedUser;
       return updatedUser;
     },
-    deleteUser: (_: unknown, { id }: { id: string }) => {
-      const userIndex = users.findIndex(user => user.id === Number(id));
+    deleteUser: (_: unknown, { id }: { id: string }): boolean => {
+      const userIndex = users.findIndex((user: User) => user.id === Number(id));
       if (userIndex === -1) return false;
       
       users.splice(userIndex, 1);

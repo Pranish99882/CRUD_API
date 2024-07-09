@@ -2,8 +2,8 @@ import { Request, Response } from 'express';
 import { User } from '../models/user';
 
 export let users: User[] = [
-  { id: 1, firstName: 'John', lastName: 'Doe', email: 'john@example.com', phone: '1234567890' },
-  { id: 2, firstName: 'Jane', lastName: 'Doe', email: 'jane@example.com', phone: '0987654321' },
+  { id: 1, firstName: 'Anish', lastName: 'Karki', email: 'anish@uba.com', phone: '1234567890' },
+  { id: 2, firstName: 'Manish', lastName: 'Karki', email: 'manish@uba.com', phone: '0987654321' },
 ];
 
 export const getUsers = (req: Request, res: Response) => {
@@ -32,7 +32,7 @@ export const updateUser = (req: Request, res: Response) => {
   const userIndex = users.findIndex(user => user.id === Number(req.params.id));
   if (userIndex !== -1) {
     users[userIndex] = { ...users[userIndex], ...req.body };
-    res.json(users[userIndex]);
+    res.status(200).json(users[userIndex]);
   } else {
     res.status(404).json({ message: 'User not found' });
   }
